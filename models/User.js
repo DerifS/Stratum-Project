@@ -9,15 +9,16 @@ const userSchema = new mongoose.Schema({
 
 // Antes de guardar un nuevo usuario, voy a "hashear" la contraseña
 // Uso una función de middleware pre-save para esto
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function() {
   // Solo hasheo la contraseña si ha sido modificada (o es nueva)
   if (!this.isModified('password')) {
-    return next();
+    return; // Simplemente retorno sin llamar a next()
   }
+  
   // Genero un "salt" y luego hasheo la contraseña
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  next();
+  // Ya no hace falta llamar a next() al final
 });
 
 // Añado un método a mi modelo para comparar contraseñas durante el login
