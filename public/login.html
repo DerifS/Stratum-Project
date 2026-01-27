@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | Stratum Design</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="header-compact">
+        <div class="container">
+            <h2>Portal de <span class="gradient-text">Clientes</span></h2>
+            <p style="color: var(--text-muted);">Ingresa para gestionar tus proyectos.</p>
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="contact-form" style="max-width: 500px; margin: auto;">
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Nombre de Usuario</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-cta" style="width: 100%;">Acceder al Portal</button>
+
+                <p id="error-message" style="color: #d93025; text-align: center; margin-top: 15px; min-height: 1em;"></p>
+            </form>
+
+            <p style="text-align: center; margin-top: 20px; color: var(--text-muted);">
+                ¿No tienes una cuenta? <a href="/register.html" style="color: #06b6d4; text-decoration: none;">Regístrate aquí</a>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Stratum Design Studio.</p>
+        </div>
+    </footer>
+    
+    <script src="login.js"></script>
+</body>
+</html>

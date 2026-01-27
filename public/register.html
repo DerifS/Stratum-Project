@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cliente | Stratum Design</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="header-compact">
+        <div class="container">
+            <h2>Crea tu <span class="gradient-text">Cuenta de Cliente</span></h2>
+            <p style="color: var(--text-muted);">Accede a nuestro portal para gestionar tus proyectos de diseño.</p>
+        </div>
+    </header>
+
+    <section class="container">
+        <!-- Utilizo la misma clase del formulario de contacto para mantener el estilo -->
+        <div class="contact-form" style="max-width: 500px; margin: auto;">
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="username">Nombre de Usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Elige un nombre de usuario" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password2">Confirmar Contraseña</label>
+                    <input type="password" id="password2" name="password2" placeholder="Vuelve a escribir la contraseña" required>
+                </div>
+
+                <button type="submit" class="btn btn-cta" style="width: 100%;">Crear Cuenta</button>
+                
+                <!-- Este párrafo lo usaré para mostrar mensajes de error desde JavaScript -->
+                <p id="error-message" style="color: #d93025; text-align: center; margin-top: 15px; min-height: 1em;"></p>
+            </form>
+
+            <p style="text-align: center; margin-top: 20px; color: var(--text-muted);">
+                ¿Ya tienes una cuenta? <a href="/login.html" style="color: #06b6d4; text-decoration: none;">Inicia Sesión aquí</a>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Stratum Design Studio.</p>
+        </div>
+    </footer>
+
+    <!-- Conecto este HTML con su lógica en JavaScript -->
+    <script src="register.js"></script>
+</body>
+</html>

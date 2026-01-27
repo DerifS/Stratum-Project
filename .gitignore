@@ -1,0 +1,5 @@
+# Ignoro la carpeta de dependencias de Node
+node_modules
+
+# Ignoro mi archivo de variables de entorno para mantener mis secretos a salvo
+.env

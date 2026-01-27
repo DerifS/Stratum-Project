@@ -1,0 +1,282 @@
+:root {
+    /* Esta es la paleta de colores */
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    
+    /* Aqui puse el degradado principal */
+    --gradient-brand: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    --gradient-hover: linear-gradient(135deg, #0891b2 0%, #2563eb 100%);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    /* Este es un fondo con un degradado global */
+    background-image: radial-gradient(circle at top right, #1e293b 0%, #0f172a 60%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3 {
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+/* Esto hace que el texto tenga el degradado */
+.gradient-text {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* BOTONES */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-cta {
+    background: var(--gradient-brand);
+    color: white;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+}
+
+.btn-cta:hover {
+    background: var(--gradient-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid #3b82f6;
+    color: #3b82f6;
+}
+
+.btn-secondary:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+header {
+    text-align: center;
+    padding: 100px 0 80px;
+}
+
+header h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+/* Clase utilitaria para headers más pequeños en sub-páginas */
+.header-compact {
+    padding: 40px 0;
+}
+
+.tagline {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+section { padding: 60px 0; }
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    color: white;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(6, 182, 212, 0.5); /* Con esto se ilumina el borde al pasar el mouse */
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(to bottom right, #334155, #1e293b);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    color: rgba(255,255,255,0.3);
+    font-weight: bold;
+}
+
+/* Esto es de la MISIÓN Y VISIÓN */
+.mv-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.mv-card {
+    background: linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,1) 100%);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    flex: 1;
+}
+
+.mv-card h3 { color: #3b82f6; }
+
+/* Esto es del FORMULARIO Y PAGINA COTIZAR */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+.info-panel ul {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.info-panel li {
+    margin-bottom: 15px;
+    padding-left: 20px;
+    border-left: 3px solid #06b6d4;
+    color: var(--text-muted);
+}
+
+/* Caja de tiempos de entrega */
+.time-estimate-box {
+    margin-top: 30px; 
+    padding: 20px; 
+    background: rgba(6, 182, 212, 0.1); 
+    border-radius: 10px; 
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.time-estimate-box h4 {
+    color: #06b6d4; 
+    margin-bottom: 5px;
+}
+
+.contact-form {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.form-group { margin-bottom: 20px; }
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+footer {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 60px;
+    padding: 40px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.social-links a {
+    color: var(--text-main);
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-links a:hover { color: #06b6d4; }
+
+@media (max-width: 900px) {
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    .split-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    header h1 { font-size: 2.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .mv-container { flex-direction: column; }
+}
+
+.card-image-container {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    background: #000;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8) contrast(1.2); 
+    transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.card:hover .card-img {
+    transform: scale(1.1);
+    filter: brightness(1.1) contrast(1);
+}
