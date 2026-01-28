@@ -280,3 +280,127 @@ footer {
     transform: scale(1.1);
     filter: brightness(1.1) contrast(1);
 }
+
+/* --- ESTILOS DEL PORTAL (DASHBOARD) --- */
+
+/* Header específico del portal para que sea más compacto */
+.portal-header {
+    padding: 20px 0;
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.btn-link:hover {
+    color: #06b6d4;
+}
+
+.btn-sm {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+/* --- GRID DEL DASHBOARD (La magia para que no se vea vacío) --- */
+.dashboard-grid {
+    display: grid;
+    /* En pantallas grandes: Columna izq (350px) y el resto para la derecha */
+    grid-template-columns: 350px 1fr; 
+    gap: 40px;
+    align-items: start; /* Para que el form no se estire si la lista es larga */
+}
+
+/* Estilo para la tarjeta del formulario */
+.form-card {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 25px;
+    position: sticky;
+    top: 100px; /* Se queda fijo al hacer scroll */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.text-sm { font-size: 0.85rem; }
+
+/* Estilos de la lista de proyectos */
+.project-list-container {
+    display: grid;
+    gap: 20px;
+}
+
+/* Mejoramos las tarjetas de proyectos individuales */
+.project-card-item {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 25px;
+    transition: transform 0.2s, border-color 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Importante para responsividad en items largos */
+    gap: 15px;
+}
+
+.project-card-item:hover {
+    transform: translateX(5px); /* Pequeña animación a la derecha */
+    border-color: #3b82f6;
+}
+
+/* Status Badge (Etiqueta de estado) */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: rgba(6, 182, 212, 0.15);
+    color: #06b6d4;
+    white-space: nowrap;
+}
+
+/* --- RESPONSIVE --- */
+/* En tablets y celulares, volvemos a una sola columna */
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Una sola columna */
+    }
+    
+    .form-card {
+        position: static; /* Ya no es fijo */
+        margin-bottom: 40px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

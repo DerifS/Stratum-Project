@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const projectForm = document.getElementById('form-cotizacion');
     const projectListDiv = document.getElementById('project-list');
-    const loadingMessage = document.getElementById('loading-message');
 
     // --- FUNCIÓN PARA OBTENER LOS PROYECTOS DEL USUARIO ---
     const fetchProjects = async () => {
@@ -46,25 +45,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNCIÓN PARA MOSTRAR LOS PROYECTOS EN EL HTML ---
     const renderProjects = (projects) => {
-        // Primero, limpio la lista (y el mensaje de "cargando").
         projectListDiv.innerHTML = '';
 
         if (projects.length === 0) {
-            projectListDiv.innerHTML = `<p style="color: var(--text-muted); text-align: center;">Aún no has enviado ninguna solicitud de proyecto.</p>`;
+            projectListDiv.innerHTML = `
+                <div style="text-align: center; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1);">
+                    <p style="color: var(--text-muted); margin-bottom: 5px;">No hay proyectos activos.</p>
+                    <p style="font-size: 0.9rem; color: #555;">Usa el formulario de la izquierda para crear el primero.</p>
+                </div>`;
             return;
         }
 
-        // Por cada proyecto en la lista, creo una tarjeta HTML.
+        // Renderizado mejorado con las nuevas clases CSS del diseño de 2 columnas
         projects.forEach(project => {
             const projectCard = document.createElement('div');
-            projectCard.className = 'card'; // Reutilizo la clase de estilo que ya tienes.
+            projectCard.className = 'project-card-item'; // Clase nueva del CSS
+            
+            // Formateo la fecha para que se vea bonita (Ej: 28 de enero de 2026)
+            const fecha = new Date(project.createdAt).toLocaleDateString('es-ES', { 
+                day: 'numeric', month: 'long', year: 'numeric' 
+            });
+
+            // Convierto el tipo de servicio a un formato legible (Ej: "diseno-cad" -> "Diseno cad")
+            const tipoServicio = project.serviceType.replace('-', ' ');
+
             projectCard.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="margin-bottom: 5px;">${project.serviceType.replace('-', ' ')}</h3>
-                    <strong style="color: #06b6d4;">${project.status}</strong>
+                <div>
+                    <h3 style="margin-bottom: 8px; font-size: 1.1rem; text-transform: capitalize;">${tipoServicio}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">${project.description}</p>
+                    <small style="color: #64748b; font-size: 0.8rem;">📅 Solicitado el: ${fecha}</small>
                 </div>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">${project.description}</p>
-                <small style="color: var(--text-muted); opacity: 0.6;">Solicitado: ${new Date(project.createdAt).toLocaleDateString()}</small>
+                <div>
+                    <span class="status-badge">${project.status}</span>
+                </div>
             `;
             projectListDiv.appendChild(projectCard);
         });
@@ -76,6 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const serviceType = projectForm.servicio.value;
         const description = projectForm.mensaje.value;
+
+        // Validación básica
+        if (!description.trim()) return;
 
         try {
             const response = await fetch('/api/projects', {
