@@ -1,73 +1,74 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Verificación de Seguridad
+    // verifico si hay un token de sesion
     const token = localStorage.getItem('authToken');
     if (!token) {
         window.location.href = '/login.html';
         return;
     }
 
-    // 2. Mostrar nombre de usuario real
+    // recupero datos del almacenamiento local
+    const userRole = localStorage.getItem('authRole');
     const storedUsername = localStorage.getItem('authUsername');
-    if (storedUsername) {
-        document.getElementById('user-display-name').textContent = storedUsername;
-    }
 
-    // Elementos del DOM
+    // elementos de la interfaz para navegacion
+    const navDashboard = document.getElementById('nav-dashboard');
+    const navAdmin = document.getElementById('nav-admin');
+    const viewDashboard = document.getElementById('view-dashboard');
+    const viewAdmin = document.getElementById('view-admin');
+
+    // elementos generales del dom
     const logoutBtn = document.getElementById('logout-btn');
     const projectForm = document.getElementById('form-cotizacion');
     const projectListDiv = document.getElementById('project-list');
+    const adminKanban = document.getElementById('admin-kanban');
     
-    // Elementos KPI
+    // elementos para los numeros de arriba (kpis)
     const kpiTotal = document.getElementById('kpi-total');
     const kpiActive = document.getElementById('kpi-active');
     const kpiType = document.getElementById('kpi-type');
     const kpiCurrency = document.getElementById('kpi-currency');
 
-    // --- CARGAR DATOS DE API EXTERNA (Dólar) ---
-    const fetchCurrency = async () => {
-        try {
-            const res = await fetch('/api/currency');
-            const data = await res.json();
-            kpiCurrency.textContent = `$${data.mxn.toFixed(2)} MXN`;
-        } catch (error) {
-            kpiCurrency.textContent = "No disp.";
+    // muestro el nombre del usuario y activo la pestaña admin si tiene el rol
+    if (storedUsername) {
+        document.getElementById('user-display-name').textContent = storedUsername;
+    }
+    if (userRole === 'admin') {
+        navAdmin.style.display = 'flex'; 
+    }
+
+    // --- FUNCION PARA CAMBIAR ENTRE PESTAÑAS ---
+    const showView = (viewName) => {
+        if (viewName === 'admin') {
+            viewDashboard.style.display = 'none';
+            viewAdmin.style.display = 'block';
+            navDashboard.classList.remove('active');
+            navAdmin.classList.add('active');
+            fetchAllProjects(); 
+        } else {
+            viewDashboard.style.display = 'block';
+            viewAdmin.style.display = 'none';
+            navAdmin.classList.remove('active');
+            navDashboard.classList.add('active');
+            fetchProjects(); 
         }
     };
 
-    // --- CARGAR PROYECTOS DEL BACKEND ---
-    const fetchProjects = async () => {
-        try {
-            const response = await fetch('/api/projects', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+    navDashboard.addEventListener('click', () => showView('dashboard'));
+    navAdmin.addEventListener('click', () => showView('admin'));
 
-            if (response.status === 401) {
-                localStorage.clear(); // Limpia toda la sesión
-                window.location.href = '/login.html';
-                return;
-            }
-            if (!response.ok) throw new Error('Error de conexión');
-
-            const data = await response.json();
-            
-            const projectsArray = Array.isArray(data) ? data : (data.projects || []);
-            
-            renderProjects(projectsArray);
-            updateKPIs(projectsArray);
-
-        } catch (error) {
-            projectListDiv.innerHTML = `<div class="empty-state"><p style="color: #ef4444;">${error.message}</p></div>`;
-        }
-    };
-
-    // --- ACTUALIZAR TARJETAS SUPERIORES (KPIs) ---
+    // --- FUNCION QUE FALTABA: ACTUALIZAR LOS NUMEROS SUPERIORES ---
     const updateKPIs = (projects) => {
-        if(!projects) return;
+        if(!Array.isArray(projects)) return;
+
+        // total de solicitudes
         kpiTotal.textContent = projects.length;
+        
+        // proyectos que no estan terminados
         const activos = projects.filter(p => p.status !== 'Completado').length;
         kpiActive.textContent = activos;
 
+        // calculo el servicio que mas se repite
         if(projects.length > 0) {
             const counts = {};
             let maxServ = projects[0].serviceType;
@@ -85,44 +86,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- RENDERIZAR LISTA DE PROYECTOS (CON UPDATE PARA ADMINS) ---
+    // --- LOGICA DE DATOS EXTERNOS (DOLAR) ---
+    const fetchCurrency = async () => {
+        try {
+            const res = await fetch('/api/currency');
+            const data = await res.json();
+            kpiCurrency.textContent = `$${data.mxn.toFixed(2)} MXN`;
+        } catch (error) {
+            kpiCurrency.textContent = "No disp.";
+        }
+    };
+
+    // --- LOGICA PARA EL CLIENTE ---
+    const fetchProjects = async () => {
+        try {
+            const response = await fetch('/api/projects', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.status === 401) {
+                logout();
+                return;
+            }
+            const data = await response.json();
+            const projectsArray = Array.isArray(data) ? data : (data.projects || []);
+            
+            renderProjects(projectsArray);
+            updateKPIs(projectsArray); // aqui ya no dara error porque ya existe la funcion arriba
+        } catch (error) {
+            projectListDiv.innerHTML = `<p style="color: #ef4444;">${error.message}</p>`;
+        }
+    };
+
     const renderProjects = (projects) => {
         projectListDiv.innerHTML = '';
-        const userRole = localStorage.getItem('authRole'); // Leo el rol del usuario
-
         if (projects.length === 0) {
-            projectListDiv.innerHTML = `<div class="empty-state"><i class='bx bx-folder-open' style="font-size: 3rem; color: #334155;"></i><p>No tienes proyectos activos.</p></div>`;
+            projectListDiv.innerHTML = `<div class="empty-state"><p>No tienes proyectos activos.</p></div>`;
             return;
         }
 
         projects.forEach(project => {
             const item = document.createElement('div');
             item.className = 'project-row';
-            
             const tipoLimpio = project.serviceType.replace('-', ' ');
-            const dateObj = new Date(project.createdAt);
-            const fecha = `${dateObj.getDate()}/${dateObj.getMonth()+1}/${dateObj.getFullYear()}`;
+            const fecha = new Date(project.createdAt).toLocaleDateString();
 
-            let badgeStyle = 'badge-default';
-            if(project.status === 'Recibido') badgeStyle = 'badge-primary';
-            if(project.status === 'En Progreso') badgeStyle = 'badge-warning';
-            if(project.status === 'Completado') badgeStyle = 'badge-success';
-
-            // AQUÍ ESTÁ LA LÓGICA DE ROLES
+            // si es admin le dejo cambiar el estado desde aqui tambien
             let statusDisplay;
             if (userRole === 'admin') {
-                // Si es admin, creo un menú desplegable
-                statusDisplay = `
-                    <select class="status-select" onchange="actualizarEstado('${project._id}', this.value)">
-                        <option value="Recibido" ${project.status === 'Recibido' ? 'selected' : ''}>Recibido</option>
-                        <option value="En Progreso" ${project.status === 'En Progreso' ? 'selected' : ''}>En Progreso</option>
-                        <option value="En Revisión" ${project.status === 'En Revisión' ? 'selected' : ''}>En Revisión</option>
-                        <option value="Completado" ${project.status === 'Completado' ? 'selected' : ''}>Completado</option>
-                    </select>
-                `;
+                statusDisplay = `<select class="status-select" onchange="actualizarEstado('${project._id}', this.value)">
+                    <option value="Recibido" ${project.status === 'Recibido' ? 'selected' : ''}>Recibido</option>
+                    <option value="En Progreso" ${project.status === 'En Progreso' ? 'selected' : ''}>En Progreso</option>
+                    <option value="En Revisión" ${project.status === 'En Revisión' ? 'selected' : ''}>En Revisión</option>
+                    <option value="Completado" ${project.status === 'Completado' ? 'selected' : ''}>Completado</option>
+                </select>`;
             } else {
-                // Si es cliente, solo muestro el texto
-                statusDisplay = `<span class="status-badge ${badgeStyle}">${project.status}</span>`;
+                statusDisplay = `<span class="status-badge badge-primary">${project.status}</span>`;
             }
 
             item.innerHTML = `
@@ -133,86 +152,115 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="p-meta">
                     <span class="p-date"><i class='bx bx-calendar'></i> ${fecha}</span>
                     ${statusDisplay}
-                    <button class="btn-delete" onclick="borrarProyecto('${project._id}')" title="Eliminar proyecto">
-                        <i class='bx bx-trash'></i>
-                    </button>
-                </div>
-            `;
+                    <button class="btn-delete" onclick="borrarProyecto('${project._id}')"><i class='bx bx-trash'></i></button>
+                </div>`;
             projectListDiv.appendChild(item);
         });
     };
 
-    // --- FUNCIÓN GLOBAL PARA ACTUALIZAR ESTADO (PARA ADMIN) ---
+    // --- LOGICA PARA EL ADMINISTRADOR ---
+    const fetchAllProjects = async () => {
+        try {
+            const response = await fetch('/api/projects/all', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error("Acceso denegado: Revisa que seas admin");
+            const projects = await response.json();
+            renderAdminBoard(projects);
+        } catch (error) {
+            adminKanban.innerHTML = `<p style="color: #ef4444;">${error.message}</p>`;
+        }
+    };
+
+    const renderAdminBoard = (projects) => {
+        adminKanban.innerHTML = '';
+        const estados = ['Recibido', 'En Progreso', 'En Revisión', 'Completado'];
+
+        estados.forEach(status => {
+            const col = document.createElement('div');
+            col.className = 'admin-column';
+            const filtrados = projects.filter(p => p.status === status);
+
+            col.innerHTML = `
+                <div class="column-title">${status} <span class="project-count">${filtrados.length}</span></div>
+                <div class="admin-card-list">
+                    ${filtrados.map(p => `
+                        <div class="admin-project-card">
+                            <h4 class="admin-card-title">${p.serviceType.replace('-', ' ')}</h4>
+                            <p class="admin-card-user">Cliente: <span>${p.user ? p.user.username : 'desconocido'}</span></p>
+                            <p class="admin-card-desc">${p.description}</p>
+                            <select class="status-select" style="width: 100%; margin-top: 10px;" onchange="actualizarEstado('${p._id}', this.value)">
+                                ${estados.map(e => `<option value="${e}" ${p.status === e ? 'selected' : ''}>${e}</option>`).join('')}
+                            </select>
+                        </div>
+                    `).join('')}
+                </div>`;
+            adminKanban.appendChild(col);
+        });
+    };
+
+    // --- FUNCIONES QUE SE LLAMAN DESDE EL HTML ---
     window.actualizarEstado = async (id, nuevoStatus) => {
         try {
             const response = await fetch(`/api/projects/${id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ status: nuevoStatus })
             });
-            if (!response.ok) throw new Error('Fallo al actualizar');
-            fetchProjects(); // Recargamos para ver el cambio
+            if (!response.ok) throw new Error();
+            
+            // recargo la vista actual para ver el cambio
+            if (viewAdmin.style.display === 'block') {
+                fetchAllProjects();
+            } else {
+                fetchProjects();
+            }
         } catch (error) {
-            alert('Error al actualizar el estado.');
+            alert('No se pudo actualizar el estado.');
         }
     };
 
-    // --- FUNCIÓN GLOBAL PARA BORRAR ---
     window.borrarProyecto = async (id) => {
-        if(confirm('¿Estás seguro de eliminar esta solicitud permanentemente?')) {
+        if(confirm('¿Seguro que quieres borrar este pedido?')) {
             try {
-                const response = await fetch(`/api/projects/${id}`, {
+                await fetch(`/api/projects/${id}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                if(!response.ok) throw new Error("No se pudo eliminar");
-                fetchProjects(); 
+                fetchProjects();
+                if(viewAdmin.style.display === 'block') fetchAllProjects();
             } catch (error) {
-                alert(error.message);
+                console.error(error);
             }
         }
     };
 
-    // --- ENVIAR NUEVA SOLICITUD ---
+    // --- FORMULARIO Y LOGOUT ---
     projectForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const serviceType = projectForm.servicio.value;
         const description = projectForm.mensaje.value;
-        const btn = projectForm.querySelector('button');
-        const originalText = btn.innerHTML;
-        
         try {
-            btn.innerHTML = `<i class='bx bx-loader-alt bx-spin'></i> Procesando...`;
-            const response = await fetch('/api/projects', {
+            await fetch('/api/projects', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ serviceType, description })
             });
-            if (!response.ok) throw new Error('Fallo al crear proyecto');
             projectForm.reset();
-            await fetchProjects();
+            fetchProjects();
         } catch (error) {
-            alert(error.message);
-        } finally {
-            btn.innerHTML = originalText;
+            alert('Error al registrar el proyecto.');
         }
     });
 
-    // --- LOGOUT ---
-    logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('authUsername');
-        localStorage.removeItem('authRole'); // Asegurarse de borrar el rol también
+    const logout = () => {
+        localStorage.clear();
         window.location.href = '/login.html';
-    });
+    };
 
-    // Init
+    logoutBtn.addEventListener('click', logout);
+
+    // inicio de la aplicacion
     fetchCurrency();
     fetchProjects();
 });

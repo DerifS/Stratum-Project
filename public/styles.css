@@ -673,3 +673,81 @@ select.modern-input {
     text-transform: uppercase;
 }
 .status-select:focus { outline: none; }
+
+/* --- ESTILOS DEL PANEL DE ADMIN --- */
+.admin-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.admin-column {
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--glass-border);
+}
+
+.column-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 8px 12px;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.project-count {
+    background: rgba(0,0,0,0.3);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.admin-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-project-card {
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-left: 3px solid #06b6d4;
+}
+
+.admin-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    text-transform: capitalize;
+}
+
+.admin-card-user {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.admin-card-user span {
+    font-weight: 700;
+    color: #3b82f6;
+}
+
+.admin-card-desc {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--glass-border);
+}

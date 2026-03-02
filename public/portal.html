@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal | Stratum Intelligence</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Iconos (Opcional, usando una fuente ligera) -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body class="dashboard-body">
 
     <div class="app-layout">
-        <!-- Sidebar -->
+        <!-- barra lateral de navegacion -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-logo">Stratum<span class="gradient-text">Portal</span></h2>
@@ -19,7 +18,10 @@
             
             <div class="sidebar-nav">
                 <p class="nav-label">MENÚ PRINCIPAL</p>
-                <a href="#" class="nav-item active"><i class='bx bx-grid-alt'></i> Dashboard</a>
+                <!-- navegacion entre vistas del portal -->
+                <button id="nav-dashboard" class="nav-item active btn-transparent"><i class='bx bx-grid-alt'></i> Dashboard</button>
+                <!-- este boton estara oculto por defecto y solo se vera para admins -->
+                <button id="nav-admin" class="nav-item btn-transparent" style="display: none;"><i class='bx bx-package'></i> Todos los Pedidos</button>
                 <a href="index.html" class="nav-item"><i class='bx bx-world'></i> Web Principal</a>
                 
                 <p class="nav-label" style="margin-top: 30px;">CUENTA</p>
@@ -27,61 +29,57 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- area principal de contenido -->
         <main class="main-content">
-            <!-- Header -->
-            <header class="top-header">
-                <div>
-                    <h1 class="page-title">Bienvenido de nuevo, <span id="user-display-name" class="gradient-text">Cliente</span></h1>
-                    <p class="page-subtitle">Aquí tienes el resumen en tiempo real de tu portafolio de proyectos.</p>
-                </div>
-            </header>
+            
+            <!-- SECCION: DASHBOARD CLIENTE (VISTA POR DEFECTO) -->
+            <div id="view-dashboard">
+                <header class="top-header">
+                    <div>
+                        <h1 class="page-title">Bienvenido de nuevo, <span id="user-display-name" class="gradient-text">Cliente</span></h1>
+                        <p class="page-subtitle">Aqui tienes el resumen en tiempo real de tu portafolio de proyectos.</p>
+                    </div>
+                </header>
 
-            <!-- KPI Cards -->
-            <div class="kpi-grid">
-                <div class="kpi-card glass-panel">
-                    <div class="kpi-info">
-                        <p class="kpi-label">Total Solicitudes</p>
-                        <h3 class="kpi-value" id="kpi-total">0</h3>
+                <div class="kpi-grid">
+                    <div class="kpi-card glass-panel">
+                        <div class="kpi-info">
+                            <p class="kpi-label">Total Solicitudes</p>
+                            <h3 class="kpi-value" id="kpi-total">0</h3>
+                        </div>
+                        <div class="kpi-icon"><i class='bx bx-folder'></i></div>
                     </div>
-                    <div class="kpi-icon"><i class='bx bx-folder'></i></div>
-                </div>
-                <div class="kpi-card glass-panel">
-                    <div class="kpi-info">
-                        <p class="kpi-label">Proyectos Activos</p>
-                        <h3 class="kpi-value" id="kpi-active">0</h3>
+                    <div class="kpi-card glass-panel">
+                        <div class="kpi-info">
+                            <p class="kpi-label">Proyectos Activos</p>
+                            <h3 class="kpi-value" id="kpi-active">0</h3>
+                        </div>
+                        <div class="kpi-icon"><i class='bx bx-pulse'></i></div>
                     </div>
-                    <div class="kpi-icon"><i class='bx bx-pulse'></i></div>
-                </div>
-                <div class="kpi-card glass-panel">
-                    <div class="kpi-info">
-                        <p class="kpi-label">Servicio Principal</p>
-                        <h3 class="kpi-value" id="kpi-type">-</h3>
+                    <div class="kpi-card glass-panel">
+                        <div class="kpi-info">
+                            <p class="kpi-label">Servicio Principal</p>
+                            <h3 class="kpi-value" id="kpi-type">-</h3>
+                        </div>
+                        <div class="kpi-icon"><i class='bx bx-cube-alt'></i></div>
                     </div>
-                    <div class="kpi-icon"><i class='bx bx-cube-alt'></i></div>
-                </div>
-                <div class="kpi-card glass-panel">
-                    <div class="kpi-info">
-                        <p class="kpi-label">Dólar (USD a MXN)</p>
-                        <h3 class="kpi-value" id="kpi-currency">...</h3>
+                    <div class="kpi-card glass-panel">
+                        <div class="kpi-info">
+                            <p class="kpi-label">Dólar (USD a MXN)</p>
+                            <h3 class="kpi-value" id="kpi-currency">...</h3>
+                        </div>
+                        <div class="kpi-icon"><i class='bx bx-line-chart'></i></div>
                     </div>
-                    <div class="kpi-icon"><i class='bx bx-line-chart'></i></div>
                 </div>
-            </div>
 
-            <!-- Content Split Layout -->
-            <div class="dashboard-split">
-                
-                <!-- Left: Form -->
-                <section class="form-section">
-                    <div class="glass-panel sticky-panel">
-                        <h3 class="panel-title">Nueva Solicitud</h3>
-                        <p class="panel-desc">Ingresa los requerimientos técnicos.</p>
-                        
-                        <form id="form-cotizacion" style="margin-top: 20px;">
-                            <div class="form-group">
-                                <label for="servicio">Tipo de Servicio</label>
-                                <div class="custom-select-wrapper">
+                <div class="dashboard-split">
+                    <section class="form-section">
+                        <div class="glass-panel sticky-panel">
+                            <h3 class="panel-title">Nueva Solicitud</h3>
+                            <p class="panel-desc">Ingresa los requerimientos tecnicos.</p>
+                            <form id="form-cotizacion" style="margin-top: 20px;">
+                                <div class="form-group">
+                                    <label for="servicio">Tipo de Servicio</label>
                                     <select id="servicio" name="servicio" class="modern-input">
                                         <option value="diseno-cad">Diseño CAD (Industrial)</option>
                                         <option value="modelado-3d">Modelado 3D / Arte</option>
@@ -89,37 +87,44 @@
                                         <option value="reparacion">Análisis FEM</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="mensaje">Especificaciones</label>
-                                <textarea id="mensaje" name="mensaje" rows="4" class="modern-input" placeholder="Tolerancias, material esperado, uso final..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-cta w-100">Registrar Proyecto <i class='bx bx-right-arrow-alt'></i></button>
-                        </form>
-                    </div>
-                </section>
+                                <div class="form-group">
+                                    <label for="mensaje">Especificaciones</label>
+                                    <textarea id="mensaje" name="mensaje" rows="4" class="modern-input" placeholder="Tolerancias, material esperado..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-cta w-100">Registrar Proyecto <i class='bx bx-right-arrow-alt'></i></button>
+                            </form>
+                        </div>
+                    </section>
 
-                <!-- Right: List -->
-                <section class="list-section">
-                    <div class="glass-panel">
-                        <div class="list-header">
-                            <div>
-                                <h3 class="panel-title">Top Priorities</h3>
-                                <p class="panel-desc">Proyectos clasificados en tu portafolio.</p>
+                    <section class="list-section">
+                        <div class="glass-panel">
+                            <h3 class="panel-title">Tus Proyectos</h3>
+                            <div id="project-list" class="advanced-project-list" style="margin-top: 20px;">
+                                <div class="empty-state">
+                                    <i class='bx bx-loader-alt bx-spin'></i>
+                                    <p>Sincronizando datos...</p>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div id="project-list" class="advanced-project-list">
-                            <!-- Los proyectos se inyectarán aquí -->
-                            <div class="empty-state">
-                                <i class='bx bx-loader-alt bx-spin'></i>
-                                <p>Sincronizando con el servidor...</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
+                    </section>
+                </div>
             </div>
+
+            <!-- SECCION: PEDIDOS GENERALES (SOLO ADMIN) -->
+            <div id="view-admin" style="display: none;">
+                <header class="top-header">
+                    <div>
+                        <h1 class="page-title">Gestión de <span class="gradient-text">Pedidos Globales</span></h1>
+                        <p class="page-subtitle">Supervisión y control de estados para todos los clientes.</p>
+                    </div>
+                </header>
+
+                <!-- tablero de columnas tipo kanban -->
+                <div class="admin-board" id="admin-kanban">
+                    <!-- las columnas se generaran dinamicamente con js -->
+                </div>
+            </div>
+
         </main>
     </div>
 

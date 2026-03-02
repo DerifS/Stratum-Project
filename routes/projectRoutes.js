@@ -1,11 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const { getProjects, createProject, updateProject, deleteProject } = require('../controllers/projectController');
-const { protect } = require('../middleware/authMiddleware');
+const { 
+    getProjects, 
+    createProject, 
+    updateProject, 
+    deleteProject, 
+    getAllProjects 
+} = require('../controllers/projectController');
+const { protect, admin } = require('../middleware/authMiddleware');
 
-// Aplico el middleware 'protect' a todas las rutas de proyectos.
-// Esto me asegura que solo los usuarios autenticados puedan acceder.
-router.route('/').get(protect, getProjects).post(protect, createProject);
-router.route('/:id').put(protect, updateProject).delete(protect, deleteProject);
+// 1. Rutas base
+router.route('/')
+    .get(protect, getProjects)
+    .post(protect, createProject);
+
+// 2. Rutas estáticas específicas (DEBEN IR ANTES QUE LAS DINÁMICAS)
+// Esto evita que 'all' sea confundido con un ':id'
+router.route('/all')
+    .get(protect, admin, getAllProjects);
+
+// 3. Rutas dinámicas con parámetros
+router.route('/:id')
+    .put(protect, updateProject)
+    .delete(protect, deleteProject);
 
 module.exports = router;

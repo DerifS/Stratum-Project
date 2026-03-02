@@ -107,4 +107,17 @@ const updateProject = async (req, res, next) => {
     }
 };
 
-module.exports = { getProjects, createProject, updateProject, deleteProject };
+// Obtener TODOS los proyectos (SOLO ADMIN)
+const getAllProjects = async (req, res, next) => {
+    try {
+        // Hago el populate para traer el nombre del usuario desde la coleccion Users
+        const projects = await Project.find({})
+            .populate('user', 'username')
+            .sort({ createdAt: -1 });
+        res.json(projects);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getProjects, createProject, updateProject, deleteProject, getAllProjects };
