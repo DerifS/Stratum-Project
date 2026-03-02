@@ -26,6 +26,7 @@ const registerUser = async (req, res, next) => {
         _id: user._id,
         username: user.username,
         token: generateToken(user._id),
+        role: user.role,
       });
     } else {
       res.status(400);
@@ -49,6 +50,7 @@ const loginUser = async (req, res, next) => {
         _id: user._id,
         username: user.username,
         token: generateToken(user._id),
+        role: user.role,
       });
     } else {
       res.status(401); // Unauthorized

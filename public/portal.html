@@ -3,75 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Cliente | Stratum Design</title>
+    <title>Portal | Stratum Intelligence</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Iconos (Opcional, usando una fuente ligera) -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="dashboard-body">
 
-    <!-- Header Mejorado: Logotipo a la izquierda, Menú a la derecha -->
-    <header class="portal-header">
-        <div class="container header-content">
-            <div class="brand">
-                <h2>Stratum <span class="gradient-text">Portal</span></h2>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-logo">Stratum<span class="gradient-text">Portal</span></h2>
             </div>
-            <div class="nav-buttons">
-                <!-- Aquí está tu opción para volver al inicio -->
-                <a href="index.html" class="btn-link">Volver al Inicio</a>
-                <button id="logout-btn" class="btn btn-secondary btn-sm">Cerrar Sesión</button>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <!-- Dashboard Grid: Aquí dividimos la pantalla en 2 -->
-        <div class="dashboard-grid">
             
-            <!-- COLUMNA IZQUIERDA: El Formulario (Fijo) -->
-            <aside class="dashboard-sidebar">
-                <div class="card form-card">
-                    <h3>Nuevo Proyecto</h3>
-                    <p class="text-sm text-muted">Cuéntanos qué necesitas y comenzamos a trabajar.</p>
-                    
-                    <form id="form-cotizacion" style="margin-top: 20px;">
-                        <div class="form-group">
-                            <label for="servicio">Servicio</label>
-                            <select id="servicio" name="servicio">
-                                <option value="diseno-cad">Diseño CAD (Industrial)</option>
-                                <option value="modelado-3d">Modelado Artístico</option>
-                                <option value="ingenieria-inversa">Ingeniería Inversa</option>
-                                <option value="reparacion">Reparación 3D</option>
-                            </select>
+            <div class="sidebar-nav">
+                <p class="nav-label">MENÚ PRINCIPAL</p>
+                <a href="#" class="nav-item active"><i class='bx bx-grid-alt'></i> Dashboard</a>
+                <a href="index.html" class="nav-item"><i class='bx bx-world'></i> Web Principal</a>
+                
+                <p class="nav-label" style="margin-top: 30px;">CUENTA</p>
+                <button id="logout-btn" class="nav-item btn-transparent"><i class='bx bx-log-out'></i> Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div>
+                    <h1 class="page-title">Bienvenido de nuevo, <span id="user-display-name" class="gradient-text">Cliente</span></h1>
+                    <p class="page-subtitle">Aquí tienes el resumen en tiempo real de tu portafolio de proyectos.</p>
+                </div>
+            </header>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card glass-panel">
+                    <div class="kpi-info">
+                        <p class="kpi-label">Total Solicitudes</p>
+                        <h3 class="kpi-value" id="kpi-total">0</h3>
+                    </div>
+                    <div class="kpi-icon"><i class='bx bx-folder'></i></div>
+                </div>
+                <div class="kpi-card glass-panel">
+                    <div class="kpi-info">
+                        <p class="kpi-label">Proyectos Activos</p>
+                        <h3 class="kpi-value" id="kpi-active">0</h3>
+                    </div>
+                    <div class="kpi-icon"><i class='bx bx-pulse'></i></div>
+                </div>
+                <div class="kpi-card glass-panel">
+                    <div class="kpi-info">
+                        <p class="kpi-label">Servicio Principal</p>
+                        <h3 class="kpi-value" id="kpi-type">-</h3>
+                    </div>
+                    <div class="kpi-icon"><i class='bx bx-cube-alt'></i></div>
+                </div>
+                <div class="kpi-card glass-panel">
+                    <div class="kpi-info">
+                        <p class="kpi-label">Dólar (USD a MXN)</p>
+                        <h3 class="kpi-value" id="kpi-currency">...</h3>
+                    </div>
+                    <div class="kpi-icon"><i class='bx bx-line-chart'></i></div>
+                </div>
+            </div>
+
+            <!-- Content Split Layout -->
+            <div class="dashboard-split">
+                
+                <!-- Left: Form -->
+                <section class="form-section">
+                    <div class="glass-panel sticky-panel">
+                        <h3 class="panel-title">Nueva Solicitud</h3>
+                        <p class="panel-desc">Ingresa los requerimientos técnicos.</p>
+                        
+                        <form id="form-cotizacion" style="margin-top: 20px;">
+                            <div class="form-group">
+                                <label for="servicio">Tipo de Servicio</label>
+                                <div class="custom-select-wrapper">
+                                    <select id="servicio" name="servicio" class="modern-input">
+                                        <option value="diseno-cad">Diseño CAD (Industrial)</option>
+                                        <option value="modelado-3d">Modelado 3D / Arte</option>
+                                        <option value="ingenieria-inversa">Ingeniería Inversa</option>
+                                        <option value="reparacion">Análisis FEM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mensaje">Especificaciones</label>
+                                <textarea id="mensaje" name="mensaje" rows="4" class="modern-input" placeholder="Tolerancias, material esperado, uso final..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-cta w-100">Registrar Proyecto <i class='bx bx-right-arrow-alt'></i></button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Right: List -->
+                <section class="list-section">
+                    <div class="glass-panel">
+                        <div class="list-header">
+                            <div>
+                                <h3 class="panel-title">Top Priorities</h3>
+                                <p class="panel-desc">Proyectos clasificados en tu portafolio.</p>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="mensaje">Detalles</label>
-                            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Medidas, material, uso..." required></textarea>
+                        
+                        <div id="project-list" class="advanced-project-list">
+                            <!-- Los proyectos se inyectarán aquí -->
+                            <div class="empty-state">
+                                <i class='bx bx-loader-alt bx-spin'></i>
+                                <p>Sincronizando con el servidor...</p>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-cta" style="width: 100%;">Crear Solicitud</button>
-                    </form>
-                </div>
-            </aside>
+                    </div>
+                </section>
 
-            <!-- COLUMNA DERECHA: La Lista de Proyectos (Expansible) -->
-            <main class="dashboard-main">
-                <div class="section-header">
-                    <h2>Mis <span class="gradient-text">Proyectos</span></h2>
-                    <!-- Aquí podrías poner un contador si quisieras después -->
-                </div>
-
-                <div id="project-list" class="project-list-container">
-                    <!-- Aquí se cargan los proyectos -->
-                    <p id="loading-message" style="color: var(--text-muted);">Cargando tu historial...</p>
-                </div>
-            </main>
-
-        </div>
+            </div>
+        </main>
     </div>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Stratum Design Studio.</p>
-        </div>
-    </footer>
 
     <script src="portal.js"></script>
 </body>

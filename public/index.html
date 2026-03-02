@@ -3,78 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stratum Design | Ingeniería Digital</title>
+    <title>Stratum Design | Ingeniería Digital Avanzada</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="landing-body">
 
-    <header>
-        <div class="container">
-            <h1>Ingeniería y <span class="gradient-text">Diseño 3D</span></h1>
-            <p class="tagline">Transformamos problemas industriales en soluciones digitales. Expertos en CAD, modelado orgánico y optimización topológica.</p>
-            <a href="login.html" class="btn btn-cta">Cotizar Diseño</a>
+    <!-- Navbar Flotante Glassmorphism -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Stratum<span class="gradient-text">Design</span></a>
+            <div class="nav-links">
+                <a href="#servicios" class="nav-link">Servicios</a>
+                <a href="#filosofia" class="nav-link">Filosofía</a>
+                <a href="login.html" class="nav-link login-link">Iniciar Sesión</a>
+                <a href="register.html" class="btn btn-cta btn-sm">Crear Cuenta</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero Inmersiva -->
+    <header class="hero-section">
+        <div class="hero-glow"></div>
+        <div class="container hero-content">
+            <div class="badge-tech">Ingeniería 4.0</div>
+            <h1 class="hero-title">Elevando la Ingeniería a la <br><span class="gradient-text">Era Digital</span></h1>
+            <p class="hero-tagline">Transformo problemas industriales complejos en soluciones digitales precisas. Especialista en CAD, modelado orgánico y optimización topológica para manufactura avanzada.</p>
+            
+            <div class="hero-buttons">
+                <!-- Solo dejamos el botón principal para evitar redundancia -->
+                <a href="login.html" class="btn btn-cta">Acceder al Portal <i class='bx bx-right-arrow-alt'></i></a>
+            </div>
         </div>
     </header>
 
-    <section id="proyectos">
+    <!-- Sección de Servicios -->
+    <section id="servicios" class="services-section">
         <div class="container">
-            <h2 class="section-title">Nuestros <span class="gradient-text">Servicios</span></h2>
-            <div class="projects-grid">
-                
-                <article class="card">
-                    <div class="card-image-container">
-                        <img src="Archivo CAD.webp" alt="Diseño CAD en monitor" class="card-img">
+            <div class="section-header-center">
+                <h2>Catálogo de <span class="gradient-text">Servicios</span></h2>
+                <p>Soluciones integrales respaldadas por tecnología de punta.</p>
+            </div>
+
+            <div class="services-grid">
+                <article class="service-card glass-panel">
+                    <div class="service-img-wrapper">
+                        <img src="archivo CAD.webp" alt="Diseño CAD" class="service-img">
+                        <div class="service-icon"><i class='bx bx-vector'></i></div>
                     </div>
-                    <h3>Modelado Técnico</h3>
-                    <p style="color: #94a3b8; font-size: 0.9rem;">Creación de planos y archivos STL para manufactura.</p>
+                    <div class="service-content">
+                        <h3>Modelado Técnico</h3>
+                        <p>Creación de planos de ingeniería y archivos STL optimizados para manufactura aditiva y sustractiva.</p>
+                    </div>
                 </article>
 
-                <article class="card">
-                    <div class="card-image-container">
-                        <img src="Digitalizacion.jpg" alt="Proceso de escaneo 3D" class="card-img">
+                <article class="service-card glass-panel">
+                    <div class="service-img-wrapper">
+                        <img src="Digitalizacion.jpg" alt="Escaneo 3D" class="service-img">
+                        <div class="service-icon"><i class='bx bx-scan'></i></div>
                     </div>
-                    <h3>Ingeniería Inversa</h3>
-                    <p style="color: #94a3b8; font-size: 0.9rem;">Escaneo 3D de piezas físicas para convertirlas a digital.</p>
+                    <div class="service-content">
+                        <h3>Ingeniería Inversa</h3>
+                        <p>Digitalización mediante escaneo 3D de alta precisión para reconstruir o mejorar piezas físicas existentes.</p>
+                    </div>
                 </article>
 
-                <article class="card">
-                    <div class="card-image-container">
-                        <img src="CFD.webp" alt="Simulación de estrés de materiales" class="card-img">
+                <article class="service-card glass-panel">
+                    <div class="service-img-wrapper">
+                        <img src="CFD.webp" alt="Análisis FEM" class="service-img">
+                        <div class="service-icon"><i class='bx bx-line-chart'></i></div>
                     </div>
-                    <h3>Análisis FEM</h3>
-                    <p style="color: #94a3b8; font-size: 0.9rem;">Pruebas de resistencia virtual antes de fabricar.</p>
+                    <div class="service-content">
+                        <h3>Análisis FEM</h3>
+                        <p>Simulación virtual de estrés, fluidos y resistencia de materiales para validar diseños antes de producción.</p>
+                    </div>
                 </article>
 
-                <article class="card">
-                    <div class="card-image-container">
-                        <img src="3D Printer.jpg" alt="Mantenimiento de impresora 3D" class="card-img">
+                <article class="service-card glass-panel">
+                    <div class="service-img-wrapper">
+                        <img src="3D Printer.jpg" alt="Mantenimiento 3D" class="service-img">
+                        <div class="service-icon"><i class='bx bx-wrench'></i></div>
                     </div>
-                    <h3>Mantenimiento</h3>
-                    <p style="color: #94a3b8; font-size: 0.9rem;">Diagnóstico y reparación de impresoras industriales.</p>
+                    <div class="service-content">
+                        <h3>Mantenimiento</h3>
+                        <p>Servicio técnico, diagnóstico y calibración avanzada para equipos de impresión 3D industriales.</p>
+                    </div>
                 </article>
-
             </div>
         </div>
     </section>
 
-    <section id="filosofia">
+    <!-- Sección de Filosofía -->
+    <section id="filosofia" class="philosophy-section">
         <div class="container">
-            <div class="mv-container">
-                <div class="mv-card">
+            <div class="philosophy-grid">
+                <div class="philosophy-card glass-panel glow-blue">
+                    <div class="phil-icon"><i class='bx bx-target-lock'></i></div>
                     <h3>Nuestra Misión</h3>
-                    <p>Proveer soluciones de ingeniería digital de vanguardia que optimicen los procesos productivos de nuestros clientes.</p>
+                    <p>Proveer soluciones de ingeniería digital de vanguardia que optimicen los procesos productivos, reduciendo costos y tiempos de iteración para nuestros clientes corporativos.</p>
                 </div>
-                <div class="mv-card">
+                <div class="philosophy-card glass-panel glow-cyan">
+                    <div class="phil-icon"><i class='bx bx-rocket'></i></div>
                     <h3>Nuestra Visión</h3>
-                    <p>Ser la consultora líder en diseño aditivo y modelado 3D en el mercado tecnológico global.</p>
+                    <p>Consolidarnos como el estudio de consultoría líder en diseño aditivo y modelado 3D de precisión dentro del mercado tecnológico e industrial a nivel global.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer>
+    <!-- Footer Moderno -->
+    <footer class="main-footer">
         <div class="container">
-            <p>&copy; 2026 Stratum Design Studio. Servicios Profesionales.</p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h2>Stratum<span class="gradient-text">Design</span></h2>
+                    <p>Ingeniería digital sin límites.</p>
+                </div>
+                <div class="footer-social">
+                    <!-- Footer limpio, solo GitHub con enlace a tu repo -->
+                    <a href="https://github.com/DerifS/Stratum-Project" target="_blank" rel="noopener noreferrer"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Stratum Design Studio. Proyecto Académico Full Stack.</p>
+            </div>
         </div>
     </footer>
 
