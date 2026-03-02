@@ -1,7 +1,7 @@
 const Project = require('../models/Project');
-const mongoose = require('mongoose'); // <-- Importante para validar el ID
+const mongoose = require('mongoose');
 
-// Obtener proyectos con PAGINACIÓN
+/** Obtiene una lista paginada de proyectos asociados al usuario autenticado. */
 const getProjects = async (req, res, next) => {
   try {
     const page = Number(req.query.page) || 1;
@@ -28,7 +28,7 @@ const getProjects = async (req, res, next) => {
   }
 };
 
-// Crear un nuevo proyecto
+/** Crea un nuevo registro de proyecto vinculado al usuario en sesión. */
 const createProject = async (req, res, next) => {
   const { serviceType, description } = req.body;
   try {
@@ -44,44 +44,38 @@ const createProject = async (req, res, next) => {
   }
 };
 
-// Eliminar un proyecto (VERSIÓN FINAL Y ROBUSTA)
+/** Elimina un proyecto específico por ID, previa validación de existencia y permisos. */
 const deleteProject = async (req, res, next) => {
     try {
         const projectId = req.params.id;
 
-        // 1. BLINDAJE DE SEGURIDAD: Validar que el ID es un ID de Mongo válido.
         if (!mongoose.Types.ObjectId.isValid(projectId)) {
-            res.status(400); // Bad Request
+            res.status(400);
             throw new Error('ID de proyecto no válido');
         }
         
-        // 2. Buscamos el proyecto
         const project = await Project.findById(projectId);
 
-        // 3. Si no existe, error 404
         if (!project) {
             res.status(404);
             throw new Error('Proyecto no encontrado');
         }
 
-        // 4. Verificamos permisos (Solo el dueño o un admin pueden borrar)
+        // Validación de permisos: Propietario del recurso o Administrador
         if (project.user.toString() !== req.user.id && req.user.role !== 'admin') {
             res.status(401);
             throw new Error('No tienes permiso para eliminar este proyecto');
         }
 
-        // 5. Lo eliminamos usando el ID
         await Project.findByIdAndDelete(projectId);
         
-        // 6. Enviamos una respuesta de éxito
         res.status(200).json({ message: 'Eliminado correctamente', id: projectId });
     } catch (error) {
-        // Cualquier error es atrapado aquí y enviado al middleware de errores
         next(error);
     }
 };
 
-// Actualizar
+/** Actualiza el estado de un proyecto existente (Requiere privilegios de administrador). */
 const updateProject = async (req, res, next) => {
     try {
         const { status } = req.body;
@@ -92,13 +86,13 @@ const updateProject = async (req, res, next) => {
             throw new Error('Proyecto no encontrado');
         }
 
-        // Seguridad: Solo un admin puede cambiar el estado
+        // Control de acceso: Solo administradores pueden modificar el estado
         if (req.user.role !== 'admin') {
             res.status(403); // Forbidden
             throw new Error('No tienes permiso para actualizar proyectos');
         }
 
-        project.status = status || project.status; // Actualiza el estado
+        project.status = status || project.status;
         const updatedProject = await project.save();
         
         res.json(updatedProject);
@@ -107,10 +101,9 @@ const updateProject = async (req, res, next) => {
     }
 };
 
-// Obtener TODOS los proyectos (SOLO ADMIN)
+/** Recupera la totalidad de proyectos registrados en el sistema (Ruta administrativa). */
 const getAllProjects = async (req, res, next) => {
     try {
-        // Hago el populate para traer el nombre del usuario desde la coleccion Users
         const projects = await Project.find({})
             .populate('user', 'username')
             .sort({ createdAt: -1 });

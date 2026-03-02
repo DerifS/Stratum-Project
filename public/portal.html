@@ -10,7 +10,7 @@
 <body class="dashboard-body">
 
     <div class="app-layout">
-        <!-- barra lateral de navegacion -->
+        <!-- Navegación Lateral -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2 class="sidebar-logo">Stratum<span class="gradient-text">Portal</span></h2>
@@ -18,9 +18,9 @@
             
             <div class="sidebar-nav">
                 <p class="nav-label">MENÚ PRINCIPAL</p>
-                <!-- navegacion entre vistas del portal -->
+                <!-- Navegación de Vistas -->
                 <button id="nav-dashboard" class="nav-item active btn-transparent"><i class='bx bx-grid-alt'></i> Dashboard</button>
-                <!-- este boton estara oculto por defecto y solo se vera para admins -->
+                <!-- Toggle Vista Admin (Oculto por defecto) -->
                 <button id="nav-admin" class="nav-item btn-transparent" style="display: none;"><i class='bx bx-package'></i> Todos los Pedidos</button>
                 <a href="index.html" class="nav-item"><i class='bx bx-world'></i> Web Principal</a>
                 
@@ -29,10 +29,10 @@
             </div>
         </aside>
 
-        <!-- area principal de contenido -->
+        <!-- Área Principal -->
         <main class="main-content">
             
-            <!-- SECCION: DASHBOARD CLIENTE (VISTA POR DEFECTO) -->
+            <!-- Sección: Dashboard Cliente -->
             <div id="view-dashboard">
                 <header class="top-header">
                     <div>
@@ -110,7 +110,7 @@
                 </div>
             </div>
 
-            <!-- SECCION: PEDIDOS GENERALES (SOLO ADMIN) -->
+            <!-- Sección: Dashboard Admin -->
             <div id="view-admin" style="display: none;">
                 <header class="top-header">
                     <div>
@@ -119,9 +119,8 @@
                     </div>
                 </header>
 
-                <!-- tablero de columnas tipo kanban -->
+                <!-- Contenedor Kanban -->
                 <div class="admin-board" id="admin-kanban">
-                    <!-- las columnas se generaran dinamicamente con js -->
                 </div>
             </div>
 

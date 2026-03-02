@@ -1,35 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // verifico si hay un token de sesion
+    // Validar sesión
     const token = localStorage.getItem('authToken');
     if (!token) {
         window.location.href = '/login.html';
         return;
     }
 
-    // recupero datos del almacenamiento local
+    // Datos de usuario
     const userRole = localStorage.getItem('authRole');
     const storedUsername = localStorage.getItem('authUsername');
 
-    // elementos de la interfaz para navegacion
+    // Referencias DOM: Navegación
     const navDashboard = document.getElementById('nav-dashboard');
     const navAdmin = document.getElementById('nav-admin');
     const viewDashboard = document.getElementById('view-dashboard');
     const viewAdmin = document.getElementById('view-admin');
 
-    // elementos generales del dom
+    // Referencias DOM: Componentes
     const logoutBtn = document.getElementById('logout-btn');
     const projectForm = document.getElementById('form-cotizacion');
     const projectListDiv = document.getElementById('project-list');
     const adminKanban = document.getElementById('admin-kanban');
     
-    // elementos para los numeros de arriba (kpis)
+    // Referencias DOM: KPIs
     const kpiTotal = document.getElementById('kpi-total');
     const kpiActive = document.getElementById('kpi-active');
     const kpiType = document.getElementById('kpi-type');
     const kpiCurrency = document.getElementById('kpi-currency');
 
-    // muestro el nombre del usuario y activo la pestaña admin si tiene el rol
+    // Configuración inicial de UI
     if (storedUsername) {
         document.getElementById('user-display-name').textContent = storedUsername;
     }
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navAdmin.style.display = 'flex'; 
     }
 
-    // --- FUNCION PARA CAMBIAR ENTRE PESTAÑAS ---
+    /** Control de navegación entre vistas. */
     const showView = (viewName) => {
         if (viewName === 'admin') {
             viewDashboard.style.display = 'none';
@@ -57,18 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
     navDashboard.addEventListener('click', () => showView('dashboard'));
     navAdmin.addEventListener('click', () => showView('admin'));
 
-    // --- FUNCION QUE FALTABA: ACTUALIZAR LOS NUMEROS SUPERIORES ---
+    /** Calcular y renderizar KPIs. */
     const updateKPIs = (projects) => {
         if(!Array.isArray(projects)) return;
 
-        // total de solicitudes
         kpiTotal.textContent = projects.length;
         
-        // proyectos que no estan terminados
         const activos = projects.filter(p => p.status !== 'Completado').length;
         kpiActive.textContent = activos;
 
-        // calculo el servicio que mas se repite
+        // Calcular moda estadística (Servicio más solicitado)
         if(projects.length > 0) {
             const counts = {};
             let maxServ = projects[0].serviceType;
@@ -86,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- LOGICA DE DATOS EXTERNOS (DOLAR) ---
+    /** Consultar API de divisas. */
     const fetchCurrency = async () => {
         try {
             const res = await fetch('/api/currency');
@@ -97,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- LOGICA PARA EL CLIENTE ---
+    /** Obtener proyectos (Cliente). */
     const fetchProjects = async () => {
         try {
             const response = await fetch('/api/projects', {
@@ -112,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const projectsArray = Array.isArray(data) ? data : (data.projects || []);
             
             renderProjects(projectsArray);
-            updateKPIs(projectsArray); // aqui ya no dara error porque ya existe la funcion arriba
+            updateKPIs(projectsArray);
         } catch (error) {
             projectListDiv.innerHTML = `<p style="color: #ef4444;">${error.message}</p>`;
         }
@@ -131,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const tipoLimpio = project.serviceType.replace('-', ' ');
             const fecha = new Date(project.createdAt).toLocaleDateString();
 
-            // si es admin le dejo cambiar el estado desde aqui tambien
+            // Renderizado condicional: Controles Admin
             let statusDisplay;
             if (userRole === 'admin') {
                 statusDisplay = `<select class="status-select" onchange="actualizarEstado('${project._id}', this.value)">
@@ -158,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- LOGICA PARA EL ADMINISTRADOR ---
+    /** Obtener todos los proyectos (Admin). */
     const fetchAllProjects = async () => {
         try {
             const response = await fetch('/api/projects/all', {
@@ -199,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- FUNCIONES QUE SE LLAMAN DESDE EL HTML ---
+    /** Exponer métodos globales. */
     window.actualizarEstado = async (id, nuevoStatus) => {
         try {
             const response = await fetch(`/api/projects/${id}`, {
@@ -209,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) throw new Error();
             
-            // recargo la vista actual para ver el cambio
+            // Refrescar vista activa
             if (viewAdmin.style.display === 'block') {
                 fetchAllProjects();
             } else {
@@ -235,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- FORMULARIO Y LOGOUT ---
+    /** Event Listeners */
     projectForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const serviceType = projectForm.servicio.value;
@@ -260,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutBtn.addEventListener('click', logout);
 
-    // inicio de la aplicacion
+    // Inicialización
     fetchCurrency();
     fetchProjects();
 });

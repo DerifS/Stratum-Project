@@ -9,17 +9,16 @@ const {
 } = require('../controllers/projectController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
-// 1. Rutas base
+// Endpoints base
 router.route('/')
     .get(protect, getProjects)
     .post(protect, createProject);
 
-// 2. Rutas estáticas específicas (DEBEN IR ANTES QUE LAS DINÁMICAS)
-// Esto evita que 'all' sea confundido con un ':id'
+// Endpoints estáticos (Precedencia sobre dinámicos)
 router.route('/all')
     .get(protect, admin, getAllProjects);
 
-// 3. Rutas dinámicas con parámetros
+// Endpoints dinámicos
 router.route('/:id')
     .put(protect, updateProject)
     .delete(protect, deleteProject);

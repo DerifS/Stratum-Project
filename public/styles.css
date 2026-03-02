@@ -1,5 +1,5 @@
 /* =========================================
-   VARIABLES GLOBALES Y RESET
+   VARIABLES & RESET
    ========================================= */
 :root {
     --bg-color: #0f172a;
@@ -29,7 +29,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Fondo radial dinámico para todas las páginas */
+/* Background dinámico global */
 .landing-body, .dashboard-body {
     background-image: radial-gradient(circle at top right, rgba(30, 41, 59, 0.6) 0%, var(--bg-color) 70%);
     min-height: 100vh;
@@ -41,7 +41,7 @@ body {
     padding: 0 24px;
 }
 
-/* Utilidades Comunes */
+/* Utilidades */
 .gradient-text {
     background: var(--gradient-brand);
     -webkit-background-clip: text;
@@ -59,7 +59,7 @@ body {
 }
 
 /* =========================================
-   SISTEMA DE BOTONES
+   COMPONENTES: BOTONES
    ========================================= */
 .btn {
     display: inline-flex;
@@ -104,10 +104,10 @@ body {
 }
 
 /* =========================================
-   PÁGINA PRINCIPAL (LANDING PAGE)
+   LANDING PAGE
    ========================================= */
 
-/* Navbar Flotante */
+/* Navbar */
 .main-nav {
     position: fixed;
     top: 0;
@@ -153,7 +153,7 @@ body {
 .nav-link:hover { color: white; }
 .login-link { color: #06b6d4; }
 
-/* Hero Section */
+/* Hero */
 .hero-section {
     position: relative;
     min-height: 100vh;
@@ -217,7 +217,7 @@ body {
     gap: 16px;
 }
 
-/* Sections Generales */
+/* Secciones Generales */
 .section-header-center {
     text-align: center;
     margin-bottom: 60px;
@@ -236,7 +236,7 @@ body {
 
 .services-section { padding: 100px 0; }
 
-/* Tarjetas de Servicios Premium */
+/* Cards Servicios */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -354,7 +354,7 @@ body {
 }
 
 /* =========================================
-   FORMULARIOS (Login, Register)
+   AUTH & FORMULARIOS
    ========================================= */
 .auth-container {
     display: flex;
@@ -380,7 +380,7 @@ body {
     color: var(--text-muted);
 }
 
-/* Inputs Premium (Oscuros) */
+/* Estilos de Input */
 .modern-input {
     width: 100%;
     background: rgba(15, 23, 42, 0.6);
@@ -400,7 +400,7 @@ body {
     background: rgba(15, 23, 42, 0.9);
 }
 
-/* Eliminar flecha del select nativo en algunos navegadores */
+/* Reset apariencia Select */
 select.modern-input {
     appearance: none;
     -webkit-appearance: none;
@@ -420,7 +420,7 @@ select.modern-input {
 .auth-links a { color: #06b6d4; text-decoration: none; font-weight: 600; }
 
 /* =========================================
-   ESTILOS DEL DASHBOARD (Portal Cliente)
+   DASHBOARD (CLIENTE)
    ========================================= */
 .sidebar {
     width: 260px;
@@ -439,7 +439,7 @@ select.modern-input {
     border-bottom: 1px solid var(--glass-border);
 }
 
-/* Tipografía refinada para el Logo */
+/* Tipografía Logo */
 .sidebar-logo {
     font-size: 1.3rem; 
     color: white;
@@ -517,7 +517,7 @@ select.modern-input {
 
 .top-header { margin-bottom: 40px; }
 
-/* Tipografía refinada para el Título del Dashboard */
+/* Títulos Dashboard */
 .page-title { 
     font-size: 1.75rem; 
     color: white; 
@@ -527,7 +527,7 @@ select.modern-input {
 
 .page-subtitle { color: var(--text-muted); font-size: 1rem; margin-top: 5px; }
 
-/* --- KPI GRID MEJORADO --- */
+/* Grid KPIs */
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -576,7 +576,7 @@ select.modern-input {
     font-size: 1.2rem;
 }
 
-/* --- SPLIT LAYOUT --- */
+/* Layout Dividido */
 .dashboard-split {
     display: grid;
     grid-template-columns: 350px 1fr;
@@ -590,7 +590,7 @@ select.modern-input {
 
 .w-100 { width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;}
 
-/* Project List */
+/* Lista de Proyectos */
 .advanced-project-list {
     display: flex;
     flex-direction: column;
@@ -635,7 +635,7 @@ select.modern-input {
 .empty-state i { font-size: 2rem; margin-bottom: 10px; opacity: 0.5;}
 
 /* =========================================
-   MEDIA QUERIES (Responsive general)
+   RESPONSIVE
    ========================================= */
 @media (max-width: 1024px) {
     .dashboard-split { grid-template-columns: 1fr; }
@@ -674,7 +674,7 @@ select.modern-input {
 }
 .status-select:focus { outline: none; }
 
-/* --- ESTILOS DEL PANEL DE ADMIN --- */
+/* PANEL ADMIN (KANBAN) */
 .admin-board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

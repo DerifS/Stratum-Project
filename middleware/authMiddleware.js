@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+/** Middleware de protección de rutas (JWT). */
 const protect = async (req, res, next) => {
     let token;
 
@@ -22,7 +23,7 @@ const protect = async (req, res, next) => {
     }
 };
 
-// esta es la funcion que probablemente te esta dando el error si no la tienes aqui
+/** Middleware de autorización: Admin. */
 const admin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         next();
@@ -32,5 +33,4 @@ const admin = (req, res, next) => {
     }
 };
 
-// comprueba que ambas esten aqui abajo
 module.exports = { protect, admin };

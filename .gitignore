@@ -1,5 +1,5 @@
-# Ignoro la carpeta de dependencias de Node
+# Dependencias del proyecto
 node_modules
 
-# Ignoro mi archivo de variables de entorno para mantener mis secretos a salvo
+# Variables de entorno y configuración sensible
 .env
