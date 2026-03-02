@@ -30,6 +30,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Defino las rutas base para la autenticación y las tareas
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/projects', require('./routes/projectRoutes'));
+app.use('/api/currency', require('./routes/currencyRoutes'));
 
 // --- Middleware de Manejo de Errores ---
 // Lo pongo al final para que capture cualquier error que ocurra en las rutas
@@ -39,3 +40,4 @@ app.use(errorMiddleware);
 // Defino el puerto en el que correrá el servidor, usando la variable de entorno o 3000 por defecto
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+
